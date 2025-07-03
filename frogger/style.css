@@ -1,0 +1,10 @@
+body {
+  background-color: lightblue; /* === STUDENT ZONE: Change background === */
+  text-align: center;
+  font-family: sans-serif;
+}
+
+canvas {
+  border: 3px solid black;
+  background-color: #fffbe6;
+}
