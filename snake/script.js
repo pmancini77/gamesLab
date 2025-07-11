@@ -1,6 +1,7 @@
 // === STUDENT ZONE: Customize your game here! ===
-let snakeColor = "yellow";
-let foodColor = "blue";
+let snakeColor = "blue";  
+let foodColor = "green";
+
 let gridSize = 20;      // Size of each square
 let moveSpeed = 100;    // Milliseconds between moves (lower = faster)
 // ===============================================
@@ -41,6 +42,8 @@ let moveSpeed = 100;    // Milliseconds between moves (lower = faster)
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const rows = canvas.width / gridSize;
+let paused = true;
+let direction = "right";
 
 let snake, food, dx, dy, score, gameInterval;
 
@@ -67,6 +70,8 @@ function drawSquare(x, y, color) {
 }
 
 function updateGame() {
+  if (paused) return;
+
   const head = { x: snake[0].x + dx, y: snake[0].y + dy };
 
   // Check wall collision
@@ -108,11 +113,25 @@ function gameOver() {
   startGame();
 }
 
+
 document.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowUp" && dy === 0) { dx = 0; dy = -1; }
-  if (e.key === "ArrowDown" && dy === 0) { dx = 0; dy = 1; }
-  if (e.key === "ArrowLeft" && dx === 0) { dx = -1; dy = 0; }
-  if (e.key === "ArrowRight" && dx === 0) { dx = 1; dy = 0; }
+  if (e.key === "ArrowUp" && dy === 0 && !paused) { dx = 0; dy = -1; direction = "up" }
+  if (e.key === "ArrowDown" && dy === 0 && !paused) { dx = 0; dy = 1; direction = "down" }
+  if (e.key === "ArrowLeft" && dx === 0 && !paused) { dx = -1; dy = 0; direction = "left"}
+  if (e.key === "ArrowRight" && dx === 0 && !paused) { dx = 1; dy = 0; direction = "right"}
+  
+  if (e.code === "Space") {
+    paused = !paused;
+    if (paused) {
+      dx = 0;
+      dy = 0;
+    } else {
+      if (direction === "up") {dx = 0; dy = -1;}
+      else if (direction === "down") {dx = 0; dy = 1;}
+      else if ( direction === "left") {dx = -1; dy = 0;}
+      else {dx = 1; dy = 0;}
+    }
+  }
 });
 
 startGame();
